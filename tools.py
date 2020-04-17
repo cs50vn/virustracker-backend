@@ -1,11 +1,11 @@
 from bs4 import BeautifulSoup
-from models import TodayData, YesterdayData
+from models import VirusData
 import requests
 import re
 from app import db
 
 
-def scrape_data_today():
+def scrape_data():
     base_url = 'https://www.worldometers.info/coronavirus/'
     response = requests.get(base_url)
     if response:
@@ -29,16 +29,16 @@ def filter_data(data):
 
 # import data into database objects
 def import_data():
-    today_data = TodayData()
+    virus_data = VirusData()
 
     # crawling data
-    data = scrape_data_today()
+    data_scraped = scrape_data()
 
     # process data
-    data = filter_data(data)
+    data = filter_data(data_scraped)
 
     for row in data:
-        today_data = TodayData(
+        virus_data = VirusData(
             name = row[0], 
             case_total = row[1],
             case_today = row[2],
@@ -49,6 +49,6 @@ def import_data():
             death_total = row[3],
         )
         # save each object into database
-        db.session.add(today_data)
+        db.session.add(virus_data)
     db.session.commit()
 
