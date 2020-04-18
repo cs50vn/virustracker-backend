@@ -1,5 +1,5 @@
-from app import db
 from datetime import datetime
+from app import db
 
 class VirusData(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -16,5 +16,5 @@ class VirusData(db.Model):
     def __repr__(self):
         return f'ID:{self.id}, Country: {self.name}, Total Cases: {self.case_total}, Today Cases: {self.case_today}, \
                 Active Case: {self.case_active}, Serious: {self.case_serious}, Recovered: {self.recovered_total}, \
-                Today Deaths: {self.death_today}, Total Deaths: {self.death_total},'
+                Today Deaths: {self.death_today}, Total Deaths: {self.death_total}, Date: {self.timestamp}'
 

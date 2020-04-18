@@ -1,8 +1,7 @@
 from bs4 import BeautifulSoup
 from models import VirusData
-import requests
-import re
 from app import db
+import requests
 
 
 def scrape_data():
