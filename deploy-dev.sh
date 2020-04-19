@@ -10,10 +10,10 @@ export IMAGE_NAME=$4
 export IMAGE_TAG=$5
 export DEPLOY_SERVER_URL=$6
 export DEPLOY_SERVER_USER=$7
-export DEPLOY_SERVER_KEY=$8
+export DEPLOY_SERVER_KEY="$8"
 
 ##Init process 
-echo $DEPLOY_SERVER_KEY > key.pem
+echo "${DEPLOY_SERVER_KEY}" > key.pem
 ls -l -a
 chmod 600 key.pem
 

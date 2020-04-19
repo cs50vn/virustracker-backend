@@ -33,27 +33,5 @@ $ROOT_DIR/upload-image.sh $REGISTRY_URL $REGISTRY_USER $REGISTRY_PASS $REGISTRY_
 
 #Deploy all to dev server
 echo -e "\n*****  6  *****"
-#$ROOT_DIR/deploy-dev.sh $REGISTRY_URL $REGISTRY_USER $REGISTRY_PASS $REGISTRY_APPNAME $REGISTRY_TAGNAME $DEV_SERVER_URL $DEV_SERVER_USER $DEV_SERVER_KEY
-
-
-export IMAGE_NAME=$REGISTRY_APPNAME
-export IMAGE_TAG=$REGISTRY_TAGNAME
-export DEPLOY_SERVER_URL=$DEV_SERVER_URL
-export DEPLOY_SERVER_USER=$DEV_SERVER_USER
-export DEPLOY_SERVER_KEY=$8
-
-##Init process 
-echo "${DEV_SERVER_KEY}" > key.pem
-ls -l -a
-chmod 600 key.pem
-
-##Set up 3 container
-
-export APP_CMD="docker login $REGISTRY_URL -u $REGISTRY_USER -p $REGISTRY_PASS;
-        docker stop virustracker-${IMAGE_TAG};
-        docker pull ${REGISTRY_URL}/${IMAGE_NAME}:${IMAGE_TAG}; 
-        docker run --name virustracker-${IMAGE_TAG} --rm --network host -d ${REGISTRY_URL}/${IMAGE_NAME}:${IMAGE_TAG};
-        docker images;
-        docker ps -a" 
-ssh -i key.pem -o StrictHostKeyChecking=no $DEPLOY_SERVER_USER@$DEPLOY_SERVER_URL $APP_CMD
+$ROOT_DIR/deploy-dev.sh $REGISTRY_URL $REGISTRY_USER $REGISTRY_PASS $REGISTRY_APPNAME $REGISTRY_TAGNAME $DEV_SERVER_URL $DEV_SERVER_USER "${DEV_SERVER_KEY}"
 
