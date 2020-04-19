@@ -8,5 +8,5 @@ def hello_world1():
     return 'Hello, World!'
 
 @app.route('/v1/app/version')
-def hello_world1():
+def check_version():
     return 'Check version'
