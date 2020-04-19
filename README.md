@@ -2,6 +2,9 @@
 
 Provide API data for android app
 
+## Live check
+> https://virustracker-api-dev.7perldata.win/v1
+
 ## Install dependencies
 1. Python 3.7+
 2. Pip 20.0.2
