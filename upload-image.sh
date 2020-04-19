@@ -10,4 +10,4 @@ export REGISTRY_TAGNAME=$5
 docker login $REGISTRY_URL -u $REGISTRY_USER -p $REGISTRY_PASS
 docker push ${REGISTRY_URL}/${REGISTRY_APPNAME}:${REGISTRY_TAGNAME}
 
-##
+##registry.hub.docker.com
