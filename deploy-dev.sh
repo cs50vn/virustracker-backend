@@ -14,6 +14,7 @@ export DEPLOY_SERVER_KEY=$8
 
 ##Init process 
 echo "$DEPLOY_SERVER_KEY" > key.pem
+ls -l
 chmod 600 key.pem
 
 ##Set up 3 container
