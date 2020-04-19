@@ -26,6 +26,6 @@ jobs:
         REGISTRY_PASS: ${{ secrets.REGISTRY_PASS }}
         DEV_SERVER_URL: ${{ secrets.DEV_SERVER_URL }}
         DEV_SERVER_USER: ${{ secrets.DEV_SERVER_USER }}
-        DEV_SERVER_KEY: "${{ secrets.DEV_SERVER_KEY }}"
+        DEV_SERVER_KEY: ${{ secrets.DEV_SERVER_KEY }}
       run: | 
         ./.ci/scripts/ci-dev.sh $PWD
