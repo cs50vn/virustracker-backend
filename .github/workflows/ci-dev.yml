@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - feature/v1
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: 7perl/baseimage-v1.0.0
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      
+    - name: Dev stage
+      env:
+        TEST: ${{ secrets.TEST }}
+        B2_APP_ID: ${{ secrets.B2_APP_ID }}
+        B2_APP_KEY: ${{ secrets.B2_APP_KEY }}
+        APP_PORT_DEV: ${{ secrets.APP_PORT_DEV }}
+        REGISTRY_URL: ${{ secrets.REGISTRY_URL }}
+        REGISTRY_APPNAME: ${{ secrets.REGISTRY_APPNAME }}
+        REGISTRY_TAGNAME: ${{ secrets.REGISTRY_TAGNAME }}
+        REGISTRY_USER: ${{ secrets.REGISTRY_USER }}
+        REGISTRY_PASS: ${{ secrets.REGISTRY_PASS }}
+        DEV_SERVER_URL: ${{ secrets.DEV_SERVER_URL }}
+        DEV_SERVER_USER: ${{ secrets.DEV_SERVER_USER }}
+        DEV_SERVER_KEY: ${{ secrets.DEV_SERVER_KEY }}
+      run: | 
+        ./.ci/scripts/ci-dev.sh $PWD

@@ -1,0 +1,21 @@
+openapi: 3.0.0
+# Added by API Auto Mocking Plugin
+servers:
+  - url: '{protocol}://{environment}.7perldata.win/v1'
+    variables:
+      protocol:
+        enum:
+          - https
+        default: https
+      environment:
+        default: virustracker-api    # Production server
+        enum:
+          - virustracker-api          # Production server
+          - virustracker-api-dev      # Development server
+          - virustracker-api-stage    # Staging server
+info:
+  description: virustracker-backend
+  version: "1.0.0"
+  title: virustracker-backend
+  contact:
+    email: qduy88@gmail.com

@@ -1,0 +1,20 @@
+FROM python:3.8.2-alpine3.11
+
+ARG SRC_DIR
+ARG APP_PORT
+
+#Install GUnicorn
+RUN pip3 install gunicorn
+
+#Copy app package to docker image
+
+RUN echo $PWD
+WORKDIR /opt/cs50vn/virustracker
+COPY ${SRC_DIR} .
+RUN ls -l
+
+RUN pip3 install -r requirements.txt
+
+EXPOSE ${APP_PORT}
+
+ENTRYPOINT ["gunicorn", "app:app"]
