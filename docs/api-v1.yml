@@ -19,4 +19,775 @@ info:
   title: virustracker-backend
   contact:
     email: qduy88@gmail.com
+tags:
+  - name: App
+    description: App section
+  - name: Continent
+    description: Continent section
+  - name: Country
+    description: Country section
+  - name: Item
+    description: Item section
+  - name: Hook
+    description: Hook section
+paths:
+  #####################################################
+  #App
+  /app/topall:
+    get:
+      description:  Get init data (recent stories, top collections)
+      tags: 
+        - App
+      parameters:
+        - in: header
+          name: virustracker-Access-Token
+          schema:
+            type: string
+          required: false
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error
+  /app/tophome:
+    get:
+      description:  Get home infomation
+      tags: 
+        - App
+      parameters:
+        - in: header
+          name: virustracker-Access-Token
+          schema:
+            type: string
+          required: false
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error            
+  /app/topcountry:
+    get:
+      description:  Get countries infomation
+      tags: 
+        - App
+      parameters:
+        - in: header
+          name: virustracker-Access-Token
+          schema:
+            type: string
+          required: false
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error  
+  /app/version/check:
+    get:
+      description:  Check app version 
+      tags: 
+        - App
+      parameters:
+        - in: header
+          name: virustracker-Access-Token
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: versionCode
+          schema:
+            type: string
+          required: true  
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error  
+  /app/country/{countryId}:
+    get:
+      description: Get a country detail
+      tags: 
+        - Country
+      parameters:
+        - in: path
+          name: countryId
+          description: countryId
+          required: true
+          schema:
+            type: string 
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error       
+  ###########################################################
+  # Admin section 
+  ###########################################################
+  # Admin | App
+  /admin/app/version:
+    get:
+      description: Get all app version
+      tags: 
+        - App
+      parameters:
+        - in: header
+          name: virustracker-Access-Token
+          schema:
+            type: string
+          required: false      
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error   
+    post:
+      description: Create a new app version
+      tags: 
+        - App
+      parameters:
+        - in: header
+          name: virustracker-Access-Token
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: versionCode
+          description: versionCode
+          required: true
+          schema:
+            type: string          
+        - in: query
+          name: status
+          description: status
+          required: true
+          schema:
+            type: string  
+        - in: query
+          name: downloadLink
+          description: downloadLink
+          required: true
+          schema:
+            type: string           
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error            
+  /admin/app/version/{versionCode}:
+    get:
+      description: Get an app version
+      tags: 
+        - App
+      parameters:
+        - in: header
+          name: virustracker-Access-Token
+          schema:
+            type: string
+          required: false
+        - in: path
+          name: versionCode
+          description: versionCode
+          required: true
+          schema:
+            type: string          
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error   
+    patch:
+      description: Update an app version
+      tags: 
+        - App
+      parameters:
+        - in: header
+          name: virustracker-Access-Token
+          schema:
+            type: string
+          required: false
+        - in: path
+          name: versionCode
+          description: versionCode
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: status
+          description: status
+          required: true
+          schema:
+            type: string  
+        - in: query
+          name: downloadLink
+          description: downloadLink
+          required: true
+          schema:
+            type: string          
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error   
+    delete:
+      description: Delete an app version
+      tags: 
+        - App
+      parameters:
+        - in: header
+          name: virustracker-Access-Token
+          schema:
+            type: string
+          required: false
+        - in: path
+          name: versionCode
+          description: versionCode
+          required: true
+          schema:
+            type: string          
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error   
 
+  ###########################################################
+  # Admin | Continent
+  /admin/continent:
+    get:
+      description: Get all continents
+      tags: 
+        - Continent      
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error
+    post:
+      description: Create a new continent
+      tags: 
+        - Continent      
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error             
+  /admin/continent/{continentId}:
+    get:
+      description: Get a continent detail
+      tags: 
+        - Continent
+      parameters:
+        - in: path
+          name: continentId
+          description: continentId
+          required: true
+          schema:
+            type: string 
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error
+    patch:
+      description: Update a continent
+      tags: 
+        - Continent
+      parameters:
+        - in: path
+          name: continentId
+          description: continentId
+          required: true
+          schema:
+            type: string 
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error   
+    delete:
+      description: 
+      tags: 
+        - Continent
+      parameters:
+        - in: path
+          name: continentId
+          description: continentId
+          required: true
+          schema:
+            type: string 
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error   
+  ###########################################################
+  # Admin | Country
+  /admin/country:
+    get:
+      description: Get all countries
+      tags: 
+        - Country      
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error
+    post:
+      description: Update a country
+      tags: 
+        - Country
+      parameters:
+        - in: path
+          name: continentId
+          description: continentId
+          required: true
+          schema:
+            type: string 
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error  
+        
+  /admin/country/{countryId}:          
+    get:  
+      description: Get a country detail
+      tags: 
+        - Country
+      parameters:
+        - in: path
+          name: continentId
+          description: continentId
+          required: true
+          schema:
+            type: string 
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error             
+    patch:
+      description: Update a country
+      tags: 
+        - Country
+      parameters:
+        - in: path
+          name: continentId
+          description: continentId
+          required: true
+          schema:
+            type: string 
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error   
+    delete:
+      description: 
+      tags: 
+        - Country
+      parameters:
+        - in: path
+          name: continentId
+          description: continentId
+          required: true
+          schema:
+            type: string 
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error   
+  /admin/country/item/{countryId}:
+    get:
+      description: Get all items in a country
+      tags: 
+        - Country      
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error      
+  /admin/country/flag/{countryId}:
+    patch:
+      description: Update flag in country
+      tags: 
+        - Country      
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error          
+  /admin/country/continent/{countryId}:
+    patch:
+      description: Update continent in a country
+      tags: 
+        - Country      
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error     
+  ###########################################################
+  # Admin | Item
+  /admin/item:
+    post:
+      description: Create a new item
+      tags: 
+        - Item  
+      parameters:
+        - in: query
+          name: countryId
+          description: countryId
+          required: true
+          schema:
+            type: string 
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error
+  /admin/item/{itemId}:
+    get:
+      description: Get a item detail
+      tags: 
+        - Item
+      parameters:
+        - in: path
+          name: itemId
+          description: itemId
+          required: true
+          schema:
+            type: string 
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error           
+    patch:
+      description: Update a item
+      tags: 
+        - Item
+      parameters:
+        - in: path
+          name: itemId
+          description: itemId
+          required: true
+          schema:
+            type: string 
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error   
+    delete:
+      description: Delete an item
+      tags: 
+        - Item
+      parameters:
+        - in: path
+          name: itemId
+          description: itemId
+          required: true
+          schema:
+            type: string 
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error   
+
+
+  ###########################################################
+  # Admin | Webhook                
+  /admin/hook/update:
+    post:
+      description: Get all app stats
+      tags: 
+        - Hook
+      parameters:
+        - in: header
+          name: virustracker-Access-Token
+          schema:
+            type: string
+          required: false
+        - in: path
+          name: assetId
+          description: assetID
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: value
+          description: value
+          required: true
+          schema:
+            type: string            
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error   
+
+###########################################################
+components:
+  schemas:
+    InventoryItem:
+      type: object
+      required:
+        - id
+        - name
+        - manufacturer
+        - releaseDate
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        name:
+          type: string
+          example: Widget Adapter
+        releaseDate:
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+        manufacturer:
+          $ref: '#/components/schemas/Manufacturer'
+    Manufacturer:
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          example: ACME Corporation
+        homePage:
+          type: string
+          format: url
+          example: 'https://www.acme-corp.com'
+        phone:
+          type: string
+          example: 408-867-5309
+      type: object

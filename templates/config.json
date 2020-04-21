@@ -1,0 +1,8 @@
+{
+  "adminkey"  : "admin",
+  "clientkey" : "client",
+  "appdbname"    : "virustracker.db",
+  "port"      : "11000",
+  "maxitemcollection": 10,
+  "secretkey": "sample"
+}
