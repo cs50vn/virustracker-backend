@@ -20,7 +20,7 @@ chmod 600 key.pem
 ##Set up 3 container
 
 export APP_CMD="docker login $REGISTRY_URL -u $REGISTRY_USER -p $REGISTRY_PASS;
-        docker stop virustracker-${IMAGE_TAG};
+        docker stop virustracker-backend-${IMAGE_TAG};
         docker pull ${REGISTRY_URL}/${IMAGE_NAME}:${IMAGE_TAG}; 
         docker run --name virustracker-${IMAGE_TAG} --rm --network host -d ${REGISTRY_URL}/${IMAGE_NAME}:${IMAGE_TAG};
         docker images;
