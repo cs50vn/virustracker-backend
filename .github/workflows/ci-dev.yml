@@ -15,7 +15,6 @@ jobs:
       
     - name: Dev stage
       env:
-        TEST: ${{ secrets.TEST }}
         B2_APP_ID: ${{ secrets.B2_APP_ID }}
         B2_APP_KEY: ${{ secrets.B2_APP_KEY }}
         APP_PORT_DEV: ${{ secrets.APP_PORT_DEV }}

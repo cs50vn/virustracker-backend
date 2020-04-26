@@ -6,3 +6,4 @@ go/pkg
 .idea
 go.sum
 scripts/__pycache__/
+*.bak_*

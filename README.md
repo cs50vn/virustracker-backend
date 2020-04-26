@@ -14,8 +14,6 @@ Provide API data for android app
 > make.bat
 
 ## How to run project
-Go to <ROOT_PROJECT>/_generated and call this command to run
-> flask run
 
 ### Note
 Rest API specification updated in <ROOT_PROJECT>/docs
