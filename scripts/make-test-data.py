@@ -3,7 +3,12 @@ import sys, os, time, config, pandas, sqlite3
 
 def buildTestData():
     sourceFile = config.dataDir + os.sep + config.schemaOutputFile
+    des = config.genDataDir
     desFile = config.genDataDir + os.sep + config.appName + ".db"
+
+    if not os.path.exists(des):
+        os.makedirs(des, exist_ok=True)
+
     db = sqlite3.connect(desFile)
     dfs = pandas.read_excel(sourceFile, sheet_name=None)
     for table, df in dfs.items():
