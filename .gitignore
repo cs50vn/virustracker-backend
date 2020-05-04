@@ -7,3 +7,4 @@ go/pkg
 go.sum
 scripts/__pycache__/
 *.bak_*
+~*

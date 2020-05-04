@@ -291,7 +291,38 @@ func MemoryUsage() {
 
 func GetTopAllHandler(params ...string) string {
     var resultCode = 200
-    var data = "topall"
+    var data = ""
+    var str = ""
+    var str1 = ""
+
+    //Top home
+    str += fmt.Sprintf(utils.OBJECT_TEMPLATE, fmt.Sprintf(utils.ITEM2_TEMPLATE, "totalCases", apprepository.AppModel.TotalCases)+","+
+        fmt.Sprintf(utils.ITEM2_TEMPLATE, "newCases", apprepository.AppModel.NewCases)+","+
+        fmt.Sprintf(utils.ITEM2_TEMPLATE, "totalDeaths", apprepository.AppModel.TotalDeaths)+","+
+        fmt.Sprintf(utils.ITEM2_TEMPLATE, "newDeaths", apprepository.AppModel.NewDeaths)+","+
+        fmt.Sprintf(utils.ITEM2_TEMPLATE, "totalRecovered", apprepository.AppModel.TotalRecovered)+","+
+        fmt.Sprintf(utils.ITEM4_TEMPLATE, "totalCasesChart", utils.GenerateChartTotalCasesJson())+","+
+        fmt.Sprintf(utils.ITEM4_TEMPLATE, "totalDeathsChart", utils.GenerateChartTotalDeathsJson())+","+
+        fmt.Sprintf(utils.ITEM4_TEMPLATE, "totalCasesRecent", utils.GenerateRecentTotalCasesJson())+","+
+        fmt.Sprintf(utils.ITEM4_TEMPLATE, "totalDeathsRecent", utils.GenerateRecentTotalDeathsJson()))
+
+    //Top country
+    for _, item := range apprepository.TopCountriesListArray {
+        str1 += fmt.Sprintf(utils.OBJECT_TEMPLATE, fmt.Sprintf(utils.ITEM_TEMPLATE, "id", item.Id)+","+
+            fmt.Sprintf(utils.ITEM_TEMPLATE, "name", item.Name)+","+
+            fmt.Sprintf(utils.ITEM_TEMPLATE, "flagId", item.FlagId)+","+
+            fmt.Sprintf(utils.ITEM_TEMPLATE, "flagUrl", item.FlagUrl)+","+
+            fmt.Sprintf(utils.ITEM_TEMPLATE, "flagData", item.FlagData)+","+
+            fmt.Sprintf(utils.ITEM2_TEMPLATE, "flagTimestamp", item.FlagTimestamp)+","+
+            fmt.Sprintf(utils.ITEM2_TEMPLATE, "timestamp", item.Timestamp)+","+
+            fmt.Sprintf(utils.ITEM2_TEMPLATE, "totalCases", item.Items[0].TotalCases)+","+
+            fmt.Sprintf(utils.ITEM2_TEMPLATE, "newCases", item.Items[0].NewCases)+","+
+            fmt.Sprintf(utils.ITEM2_TEMPLATE, "totalDeaths", item.Items[0].TotalDeaths)) + ","
+    }
+
+    str1 = fmt.Sprintf(utils.ARRAY_TEMPLATE, strings.TrimSuffix(str1, ","))
+
+    data = fmt.Sprintf(utils.OBJECT_TEMPLATE, fmt.Sprintf(utils.ITEM6_TEMPLATE, "tophome", str) + "," + fmt.Sprintf(utils.ITEM6_TEMPLATE, "topcountry", str1))
 
     return fmt.Sprintf(utils.RESULT_TEMPLATE, resultCode, data)
 }
@@ -332,8 +363,7 @@ func GetTopCountryHandler(params ...string) string {
             fmt.Sprintf(utils.ITEM2_TEMPLATE, "totalDeaths", item.Items[0].TotalDeaths)) + ","
     }
 
-    data = strings.TrimSuffix(data, ",")
-    data = fmt.Sprintf(utils.ARRAY_TEMPLATE, data)
+    data = fmt.Sprintf(utils.ARRAY_TEMPLATE, strings.TrimSuffix(data, ","))
 
     return fmt.Sprintf(utils.RESULT_TEMPLATE, resultCode, data)
 }
