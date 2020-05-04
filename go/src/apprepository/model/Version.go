@@ -5,3 +5,8 @@ type Version struct {
 	Status string
 	DownloadLink string
 }
+
+func MakeVersion(versionCode int, status string, downloadLink string) *Version {
+	return &Version{VersionCode: versionCode, Status: status, DownloadLink: downloadLink}
+}
+

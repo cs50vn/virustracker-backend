@@ -20,13 +20,18 @@ genDataDir  = ""
 goPathDir   = ""
 
 # App config
-appName = "virustracker"
+appName = "virustracker-backend"
 outputFile = appName
 versionCode = "1"
 internalVersionCode = "1.0.0"
 versionName = "v" + versionCode
 prefixNameLinux = "linux_amd64"
 prefixNameWin = "win_x64"
+
+#Test config
+schemaInputFile   = appName + "-template.db"
+schemaOutputFile  = appName + "-test-data.xlsx"
+
 
 def buildProjectPath(rootPath, host, build):
     global rootDir

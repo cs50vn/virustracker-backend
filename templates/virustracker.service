@@ -1,14 +1,14 @@
 [Unit]
-Description=Virustracker
-AssertFileIsExecutable=/opt/cs50vn/virustracker/virustracker
+Description=Virustracker Backend
+AssertFileIsExecutable=/opt/cs50vn/virustracker-backend/virustracker-backend
 
 [Service]
-WorkingDirectory=/opt/cs50vn/virustracker
+WorkingDirectory=/opt/cs50vn/virustracker-backend
 
 User=root
 Group=root
 
-ExecStart=/opt/cs50vn/virustracker/virustracker
+ExecStart=/opt/cs50vn/virustracker-backend/virustracker-backend
 
 # Let systemd restart this service always
 Restart=always

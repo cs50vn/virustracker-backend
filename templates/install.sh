@@ -1,15 +1,14 @@
 #!/usr/bin/env bash
 
+echo "Install virustracker backend service"
 
-echo "Install virustracker service"
+export VIRUSTRACKER_HOME=/opt/cs50vn/virustracker-backend
 
-export VIRUSTRACKER_HOME=/opt/cs50vn/virustracker
+mkdir -p $VIRUSTRACKER_HOME
 
-mkdir  $VIRUSTRACKER_HOME
+cp virustracker-backend config.json virustracker-backend.db $VIRUSTRACKER_HOME
+cp virustracker-backend.service /etc/systemd/system
 
-cp virustracker config.json virustracker.db $VIRUSTRACKER_HOME
-cp virustracker.service /etc/systemd/system
-
-#systemctl enable virustracker.service
-#systemctl daemon-reload
-#systemctl start virustracker.service
+systemctl enable virustracker-backend.service
+systemctl daemon-reload
+systemctl start virustracker-backend.service

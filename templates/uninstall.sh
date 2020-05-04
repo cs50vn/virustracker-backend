@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-echo "Uninstalling virusstracker api"
+echo "Uninstalling virusstracker backend"
 
-systemctl stop virustracker.service
-systemctl disable virustracker.service
+systemctl stop virustracker-backend.service
+systemctl disable virustracker-backend.service
 systemctl daemon-reload
 
-export VIRUSTRACKER_HOME=/opt/cs50vn/virustracker
+export VIRUSTRACKER_HOME=/opt/cs50vn/virustracker-backend
 
 rm -rf $VIRUSTRACKER_HOME
-rm /etc/systemd/system/virustracker.service
+rm /etc/systemd/systemvirustracker-backend.service

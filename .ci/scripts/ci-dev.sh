@@ -9,19 +9,17 @@ echo "RootDir ${ROOT_DIR}"
 echo "Install prerequisites"
 echo "======================="
 echo -e "\n*****  0  *****"
+pip3 install xlrd
+pip3 install pandas
 #$ROOT_DIR/install-prerequisites.sh
 
 #Compile app
 echo -e "\n*****  1  *****"
-$ROOT_DIR/make.sh
+$ROOT_DIR/make.sh debug
 
-#Prepare artifacts
+#Make test data
 echo -e "\n*****  2  *****"
-$ROOT_DIR/prepare-artifacts.sh
-
-#Upload artifacts
-echo -e "\n*****  3  *****"
-$ROOT_DIR/process-artifacts.sh $B2_APP_ID $B2_APP_KEY
+$ROOT_DIR/make-test-data.sh
 
 #Build app image
 echo -e "\n*****  4  *****"

@@ -1,37 +1,23 @@
 package utils
 
-var SQL_GET_ALL_NEWS            = "select * from NEWSITEM order by sort_id desc"
-var SQL_GET_ALL_TOURNAMENTS     = "select * from TOURNAMENT"
-var SQL_GET_ALL_TEAM_ID         = "select id, full_name, short_name, logo_id, logo_url, logo_data, logo_timestamp from TEAM where tournament_id = ?"
-var SQL_GET_ALL_PLAYER_ID       = "select id, full_name, short_name, logo_id, logo_url, logo_data, logo_timestamp from PLAYER where team_id = ?"
-var SQL_GET_ALL_RANKINGTABLE_ID = "select id, name from RANKING_TABLE where tournament_id = ?"
-var SQL_GET_ALL_RANKINGITEM_ID  = "select id, place_no, matches_played, won_games, lose_Games, points, team_id from RANKINGITEM where ranking_table_id = ?"
-var SQL_GET_ALL_MATCH_ID        = "select id, played_date, match_count, status, bo, home_points, away_points, home_team_id, away_team_id from MATCH where tournament_id = ?"
-var SQL_GET_TOP_TOURNAMENTS     = "select * from TOURNAMENT_HIGHLIGHT"
-var SQL_GET_TOP_MATCHES         = "select * from MATCH_HIGHLIGHT"
-var SQL_GET_TOP_NEWS            = "select * from NEWSITEM  order by sort_id desc LIMIT 10"
-var SQL_GET_FILTER_NEWS_        = "select * from NEWSITEM  where sort_id < ? order by sort_id desc limit ?"
+var SQL_GET_CONTINENTS = "select * from CONTINENT"
+var SQL_GET_COUNTRIES = "select a.id, a.name, a.capital_name, a.area, a.population, a.flag_id, a.flag_url, a.flag_data, a.flag_timestamp, a.timestamp, a.continent_id, b.name from COUNTRY a, CONTINENT b where a.continent_id = b.id order by a.name asc"
 
-var SQL_DELETE_TOP_TOURNAMENTS  = "delete from TOURNAMENT_HIGHLIGHT"
-var SQL_DELETE_TOP_MATCHES      = "delete from MATCH_HIGHLIGHT"
-var SQL_INSERT_TOP_TOURNAMENTS  = "insert into TOURNAMENT_HIGHLIGHT values(?)"
-var SQL_INSERT_TOP_MATCHES      = "insert into MATCH_HIGHLIGHT values(?)"
-var SQL_INSERT_NEWS             = "insert into NEWSITEM values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+var SQL_GET_ITEMS_IN_COUNTRY = "select id, total_cases, total_deaths, total_recovered, serious_cases, total_cases_per_1pop, total_deaths_per_1pop, total_tests, tests_per_1pop, timestamp from ITEM where country_id = ? order by timestamp desc"
+var SQL_DELETE_ITEM = "delete from ITEM where id = ?"
+var SQL_INSERT_ITEM = "insert into ITEM(total_cases, total_deaths, total_recovered, serious_cases, total_cases_per_1pop, total_deaths_per_1pop, total_tests, tests_per_1pop, timestamp, country_id) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 
-var SQL_UPDATE_TOURNAMENT           = "update TOURNAMENT set full_name = ?, short_name = ?, logo_data = ?, timestamp = ? where id = ?"
-var SQL_UPDATE_MATCH                = "update MATCH set played_date = ?,  match_count = ?, status = ?, bo = ?, home_points = ?, away_points = ?  where id = ?"
-var SQL_UPDATE_RANKINGTABLE         = "update RANKING_TABLE set name = ? where id = ?"
-var SQL_UPDATE_RANKINGITEM          = "update RANKINGITEM set place_no = ?, matches_played = ?, won_games = ?, lose_games = ?, points = ? where id = ?"
-var SQL_UPDATE_NEWSITEM             = "update NEWSITEM set title = ?, created_date = ?, content_url = ?, content_timestamp = ? where id = ?"
-var SQL_UPDATE_NEWSITEM_SORTID      = "update NEWSITEM set sort_id = ? where id = ?"
-var SQL_UPDATE_NEWSITEM_THUMBNAIL   = "update NEWSITEM set thumbnail_id = ?, thumbnail_url = ?, thumbnail_data = ?, thumbnail_timestamp = ? where id = ?"
-var SQL_UPDATE_NEWSITEM_SOURCE      = "update NEWSITEM set source_name = ?, source_id = ?, source_url = ?, source_data = ?, source_timestamp = ? where id = ?"
-var SQL_UPDATE_NEWSITEM_STATUS      = "update NEWSITEM set is_active = ? where id = ?"
-var SQL_UPDATE_TEAM                 = "update TEAM set full_name = ?, short_name = ? where id = ?"
-var SQL_UPDATE_TEAM_LOGO            = "update TEAM set logo_id = ?, logo_url = ?, logo_data = ?, logo_timestamp = ? where id = ?"
-var SQL_UPDATE_PLAYER               = "update PLAYER set full_name = ?, short_name = ? where id = ?"
-var SQL_UPDATE_PLAYER_LOGO          = "update PLAYER set logo_id = ?, logo_url = ?, logo_data = ?, logo_timestamp = ? where id = ?"
+var SQL_GET_APP_ITEM = "select * from APP_ITEM"
+var SQL_GET_APP_CHART_ITEM = "select continent_id, continent_name, value, type from APP_CHART_ITEM order by value desc"
+var SQL_GET_APP_RECENT_ITEM = "select timestamp, value, type from APP_RECENT_ITEM order by timestamp desc"
+var SQL_DELETE_APP_ITEM = "delete from APP_ITEM"
+var SQL_DELETE_APP_CHART_ITEM = "delete from APP_CHART_ITEM"
+var SQL_DELETE_APP_RECENT_ITEM = "delete from APP_RECENT_ITEM"
+var SQL_INSERT_APP_ITEM = "insert into APP_ITEM(timestamp, total_cases, new_cases, total_deaths, new_deaths, total_recovered) values(?, ?, ?, ?, ?, ?)"
+var SQL_INSERT_APP_CHART_ITEM = "insert into APP_CHART_ITEM(continent_id, continent_name, value, type) values(?, ?, ?, ?)"
+var SQL_INSERT_APP_RECENT_ITEM = "insert into APP_RECENT_ITEM(timestamp, value, type) values(?, ?, ?)"
 
+var SQL_GET_ALL_VERSIONS = "select * from VERSION order by version_code desc"
 
 var RESULT_TEMPLATE = `{
     "statusCode": %d,
@@ -40,7 +26,7 @@ var ARRAY_TEMPLATE = `[%s]`
 var OBJECT_TEMPLATE = `{%s}`
 var ITEM_TEMPLATE = `"%s":"%s"`
 var ITEM2_TEMPLATE = `"%s":%d`
-var ITEM3_TEMPLATE = `"%s":%f`
+var ITEM3_TEMPLATE = `"%s":%.2f`
 var ITEM4_TEMPLATE = `"%s": [%s]`
 var ITEM5_TEMPLATE = `"%s": {%s}`
 var ITEM6_TEMPLATE = `"%s": %s`
@@ -48,5 +34,5 @@ var ITEM7_TEMPLATE = `"%s"`
 
 //===========================================
 var FORCE_UPDATE = "force_update"
-var RECOMMEND = "recommend"
+var RECOMMEND = "recommend_update"
 var NONE = "none"

@@ -6,10 +6,10 @@ ARG APP_PORT
 #Copy app package to docker image
 
 RUN echo $PWD
-WORKDIR /opt/cs50vn/virustracker
+WORKDIR /opt/cs50vn/virustracker-backend
 COPY ${SRC_DIR} .
 RUN ls -l
 
 EXPOSE ${APP_PORT}
 
-ENTRYPOINT ["./virustracker"]
+ENTRYPOINT ["./virustracker-backend"]
