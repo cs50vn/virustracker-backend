@@ -14,11 +14,11 @@ pip3 install pandas
 #$ROOT_DIR/install-prerequisites.sh
 
 #Make test data
-echo -e "\n*****  2  *****"
+echo -e "\n*****  1  *****"
 $ROOT_DIR/make-test-data.sh
 
 #Compile app
-echo -e "\n*****  1  *****"
+echo -e "\n*****  2  *****"
 $ROOT_DIR/make.sh debug
 
 #Build app image
