@@ -13,13 +13,13 @@ pip3 install xlrd
 pip3 install pandas
 #$ROOT_DIR/install-prerequisites.sh
 
-#Compile app
-echo -e "\n*****  1  *****"
-$ROOT_DIR/make.sh debug
-
 #Make test data
 echo -e "\n*****  2  *****"
 $ROOT_DIR/make-test-data.sh
+
+#Compile app
+echo -e "\n*****  1  *****"
+$ROOT_DIR/make.sh debug
 
 #Build app image
 echo -e "\n*****  4  *****"
