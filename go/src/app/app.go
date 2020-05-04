@@ -368,7 +368,7 @@ func CheckUpdateStatusHandler(params ...string) string {
     var resultCode = 200
     var data = ""
 
-    var versionCode, err = strconv.Atoi(params[1])
+    var versionCode, err = strconv.Atoi(params[0])
     if err != nil {
         resultCode = 400
         data = fmt.Sprintf(utils.ITEM7_TEMPLATE, "Invalid Request")
