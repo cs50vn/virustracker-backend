@@ -9,18 +9,31 @@ import (
 	"io/ioutil"
 )
 
-func isValidDoc(doc []model.Item) bool {
+func isValidDoc(doc []*model.InputItem) bool {
 
 	return true
 }
 
-func Update(doc []model.Item) {
+func Update(doc []*model.InputItem) {
 	//Extract to country item
-	//for _, item := range doc {
+	//for _, inputItem := range doc {
 	//	//Write to mem
+	//	if country, ok := apprepository.TopCountriesList[inputItem.RightName]; ok {
+	//		if item, ok := utils.CheckDayInExist(country, inputItem.Timestamp); ok {
+	//			//Update to current day
+	//
+	//			//Update record to db
+	//		} else {
+	//			//Add a new day
+	//
+	//			//Add record to db
+	//		}
+	//
+	//	} else {
+	//		//Nothing to do
+	//	}
 	//
 	//
-	//	//Write to db
 	//}
 
 	//Calculate to app model
@@ -42,7 +55,7 @@ func UpdateDataHandler(params ...string) string {
 		resultCode = 400
 		data = fmt.Sprintf(utils.ITEM7_TEMPLATE, "Invalid request")
 	} else {
-		var arr []model.Item
+		var arr []*model.InputItem
 		json.Unmarshal([]byte(data), &arr)
 
 		if len(arr) == 0 {
