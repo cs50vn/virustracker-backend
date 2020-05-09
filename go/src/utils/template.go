@@ -18,6 +18,9 @@ var SQL_INSERT_APP_CHART_ITEM = "insert into APP_CHART_ITEM(continent_id, contin
 var SQL_INSERT_APP_RECENT_ITEM = "insert into APP_RECENT_ITEM(timestamp, value, type) values(?, ?, ?)"
 
 var SQL_GET_ALL_VERSIONS = "select * from VERSION order by version_code desc"
+var SQL_INSERT_A_VERSION = "insert into VERSION(version_code, status, download_link) values(?, ?, ?)"
+var SQL_UPDATE_A_VERSION = "update VERSION set status = ?, download_link = ? where version_code = ?"
+var SQL_DELETE_A_VERSION = "delete from VERSION	where version_code = ?"
 
 var RESULT_TEMPLATE = `{
     "statusCode": %d,

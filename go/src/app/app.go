@@ -62,6 +62,9 @@ func LoadData() {
     LoadCountries()
 
     LoadAppItem()
+
+    //admin_hook.Update(admin_hook.FakeData())
+    admin_hook.CalculateAppItem()
 }
 
 func LoadVersions() {
@@ -149,8 +152,11 @@ func LoadCountries() {
             countryItem := model.MakeCountry(id, name, capitalName, area, population, flagId, flagUrl,flagData, flagTimestamp, timestamp, continent, itemList)
             apprepository.TopCountriesList[id] = countryItem
             apprepository.TopCountriesListArray = append(apprepository.TopCountriesListArray, countryItem)
+
+            fmt.Println(apprepository.TopCountriesList[id].Id + " - "  + apprepository.TopCountriesList[id].Name, "; items: ", len(itemList))
         }
     }
+    fmt.Println("Total countries: %d ", len(apprepository.TopCountriesList))
 }
 
 func LoadItemsInCountry(countryId string) []*model.Item {

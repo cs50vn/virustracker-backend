@@ -17,3 +17,4 @@ var AppModel = model.MakeAppItem(0,0, 0, 0, 0, 0, nil, nil, nil, nil)
 var ContinentList = make(map[string]*model.Continent)
 var TopCountriesList = make(map[string]*model.Country)
 var TopCountriesListArray = make([]*model.Country, 0)
+
