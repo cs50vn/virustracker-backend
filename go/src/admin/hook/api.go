@@ -132,6 +132,7 @@ func Update(doc []*model.InputItem) {
             it := model.MakeItem(0, inputItem.TotalCases, 0, inputItem.TotalDeaths, 0, inputItem.TotalRecovered, inputItem.SeriousCases, inputItem.TotalCasesPer1Pop, inputItem.TotalDeathsPer1Pop, inputItem.TotalTests, inputItem.TestsPer1Pop, currentTime,0)
             id, _ := utils.InsertItem(country, it)
             it.Id = id
+            country.Timestamp = currentTime
             fmt.Println("new item id: ", id)
             utils.InsertDayInItemList(country, it)
 
