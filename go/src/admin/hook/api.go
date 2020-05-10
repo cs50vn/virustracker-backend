@@ -129,7 +129,7 @@ func Update(doc []*model.InputItem) {
             //Add a new day
             fmt.Println(inputItem.TotalCasesPer1Pop, inputItem.TotalDeathsPer1Pop, inputItem.TotalDeathsPer1Pop)
 
-            it := model.MakeItem(0, inputItem.TotalCases, 0, inputItem.TotalDeaths, 0, inputItem.TotalRecovered, inputItem.SeriousCases, inputItem.TotalCasesPer1Pop, inputItem.TotalDeathsPer1Pop, inputItem.TotalTests, inputItem.TotalDeathsPer1Pop, currentTime,0)
+            it := model.MakeItem(0, inputItem.TotalCases, 0, inputItem.TotalDeaths, 0, inputItem.TotalRecovered, inputItem.SeriousCases, inputItem.TotalCasesPer1Pop, inputItem.TotalDeathsPer1Pop, inputItem.TotalTests, inputItem.TestsPer1Pop, currentTime,0)
             id, _ := utils.InsertItem(country, it)
             it.Id = id
             fmt.Println("new item id: ", id)
