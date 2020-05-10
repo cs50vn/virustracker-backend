@@ -4,13 +4,11 @@ import (
     "cs50vn/virustracker/apprepository"
     "cs50vn/virustracker/apprepository/model"
     "database/sql"
-    _ "github.com/mattn/go-sqlite3"
     "fmt"
+    _ "github.com/mattn/go-sqlite3"
     "log"
-    "strconv"
     "strings"
     "time"
-
 )
 
 func GenerateChartTotalCasesJson() string {
@@ -63,27 +61,27 @@ func GenerateRecentTotalDeathsJson() string {
     return data
 }
 
-func GenerateCountryDetailStatus(countryId string) string {
+func GenerateCountryDetailStatus(countryId string, t int64) string {
     var data = ""
 
-    if item, ok := apprepository.TopCountriesList[countryId]; ok {
-       activeCases := item.Items[0].TotalCases - item.Items[0].TotalDeaths - item.Items[0].TotalRecovered
-       data += fmt.Sprintf(ITEM2_TEMPLATE, "totalCases", item.Items[0].TotalCases)+","+
-           fmt.Sprintf(ITEM2_TEMPLATE, "newCases", item.Items[0].NewCases) + "," +
-           fmt.Sprintf(ITEM2_TEMPLATE, "totalDeaths", item.Items[0].TotalDeaths) + "," +
-           fmt.Sprintf(ITEM2_TEMPLATE, "newDeaths", item.Items[0].NewDeaths) + "," +
-           fmt.Sprintf(ITEM2_TEMPLATE, "totalRecovered", item.Items[0].TotalRecovered) + "," +
-           fmt.Sprintf(ITEM2_TEMPLATE, "activeCases", activeCases) + "," +
-           fmt.Sprintf(ITEM2_TEMPLATE, "seriousCases", item.Items[0].SeriousCases) + "," +
-           fmt.Sprintf(ITEM_TEMPLATE, "totalCasesPer1Pop", strconv.FormatFloat(item.Items[0].TotalCasesPer1Pop, 'f', 2, 64)) + "," +
-           fmt.Sprintf(ITEM_TEMPLATE, "totalDeathsPer1Pop", strconv.FormatFloat(item.Items[0].TotalDeathsPer1Pop, 'f', 2, 64)) + "," +
-           fmt.Sprintf(ITEM2_TEMPLATE, "totalTests", item.Items[0].TotalTests) + "," +
-           fmt.Sprintf(ITEM_TEMPLATE, "testsPer1Pop", strconv.FormatFloat(item.Items[0].TestsPer1Pop, 'f', 2, 64)) + "," +
-           fmt.Sprintf(ITEM4_TEMPLATE, "totalCasesChart", GenerateTotalCasesChart(item)) + "," +
-           fmt.Sprintf(ITEM4_TEMPLATE, "totalDeathsChart", GenerateTotalDeathsChart(item))
+    if country, ok := apprepository.TopCountriesList[countryId]; ok {
+        item := GetItemByTimestamp(country, t)
+        activeCases := item.TotalCases - item.TotalDeaths - item.TotalRecovered
+        data += fmt.Sprintf(ITEM2_TEMPLATE, "totalCases", item.TotalCases) + "," +
+            fmt.Sprintf(ITEM2_TEMPLATE, "newCases", item.TotalCases-GetItemByTimestamp(country, t-86400).TotalCases) + "," +
+            fmt.Sprintf(ITEM2_TEMPLATE, "totalDeaths", item.TotalDeaths) + "," +
+            fmt.Sprintf(ITEM2_TEMPLATE, "newDeaths", item.TotalDeaths-GetItemByTimestamp(country, t-86400).TotalDeaths) + "," +
+            fmt.Sprintf(ITEM2_TEMPLATE, "totalRecovered", item.TotalRecovered) + "," +
+            fmt.Sprintf(ITEM2_TEMPLATE, "activeCases", activeCases) + "," +
+            fmt.Sprintf(ITEM2_TEMPLATE, "seriousCases", item.SeriousCases) + "," +
+            fmt.Sprintf(ITEM3_TEMPLATE, "totalCasesPer1Pop", item.TotalCasesPer1Pop) + "," +
+            fmt.Sprintf(ITEM3_TEMPLATE, "totalDeathsPer1Pop", item.TotalDeathsPer1Pop) + "," +
+            fmt.Sprintf(ITEM2_TEMPLATE, "totalTests", item.TotalTests) + "," +
+            fmt.Sprintf(ITEM3_TEMPLATE, "testsPer1Pop", item.TestsPer1Pop) + "," +
+            fmt.Sprintf(ITEM4_TEMPLATE, "totalCasesChart", GenerateTotalCasesChart(country, t)) + "," +
+            fmt.Sprintf(ITEM4_TEMPLATE, "totalDeathsChart", GenerateTotalDeathsChart(country, t))
 
     }
-
 
     return data
 }
@@ -120,14 +118,12 @@ func InsertDayInItemList(country *model.Country, item *model.Item) {
     }
 }
 
-func GenerateTotalCasesChart(country *model.Country) string {
+func GenerateTotalCasesChart(country *model.Country, t int64) string {
     var data = ""
-
-    t := time.Now().Unix()
 
     for i := 0; i < apprepository.LimitCountryChart; i++ {
         item := GetTotalCasesChartItem(country, t)
-        data += fmt.Sprintf(OBJECT_TEMPLATE, fmt.Sprintf(ITEM2_TEMPLATE, "timestamp", t) + "," +
+        data += fmt.Sprintf(OBJECT_TEMPLATE, fmt.Sprintf(ITEM2_TEMPLATE, "timestamp", t)+","+
             fmt.Sprintf(ITEM2_TEMPLATE, "value", item.TotalCases)) + ","
 
         t = t - 86400
@@ -141,23 +137,21 @@ func GetTotalCasesChartItem(country *model.Country, timestamp int64) *model.Item
 
     if item, _, ok := CheckDayInExist(country, timestamp); ok {
         return item
-    } else if timestamp < country.Items[len(country.Items) - 1].Timestamp {
-        return model.MakeItem(0,0,0,0,0,0,0,0,0,0,0, 0, 0)
+    } else if timestamp < country.Items[len(country.Items)-1].Timestamp {
+        return model.MakeItem(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
     } else {
-        return GetTotalDeathsChartItem(country, timestamp - 86400)
+        return GetTotalDeathsChartItem(country, timestamp-86400)
     }
 
 }
 
-func GenerateTotalDeathsChart(country *model.Country) string {
+func GenerateTotalDeathsChart(country *model.Country, t int64) string {
     var data = ""
-
-    t := time.Now().Unix()
 
     for i := 0; i < apprepository.LimitCountryChart; i++ {
         //tm := time.Unix(t, 0)
         item := GetTotalDeathsChartItem(country, t)
-        data += fmt.Sprintf(OBJECT_TEMPLATE, fmt.Sprintf(ITEM2_TEMPLATE, "timestamp", t) + "," +
+        data += fmt.Sprintf(OBJECT_TEMPLATE, fmt.Sprintf(ITEM2_TEMPLATE, "timestamp", t)+","+
             fmt.Sprintf(ITEM2_TEMPLATE, "value", item.TotalDeaths)) + ","
 
         t = t - 86400
@@ -167,15 +161,14 @@ func GenerateTotalDeathsChart(country *model.Country) string {
     return data
 }
 
-
 func GetTotalDeathsChartItem(country *model.Country, timestamp int64) *model.Item {
 
     if item, _, ok := CheckDayInExist(country, timestamp); ok {
         return item
-    } else if timestamp < country.Items[len(country.Items) - 1].Timestamp {
-        return model.MakeItem(0,0,0,0,0,0,0,0,0,0,0, 0, 0)
+    } else if timestamp < country.Items[len(country.Items)-1].Timestamp {
+        return model.MakeItem(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
     } else {
-        return GetTotalDeathsChartItem(country, timestamp - 86400)
+        return GetTotalDeathsChartItem(country, timestamp-86400)
     }
 
 }
@@ -184,10 +177,10 @@ func GetItemByTimestamp(country *model.Country, timestamp int64) *model.Item {
 
     if item, _, ok := CheckDayInExist(country, timestamp); ok {
         return item
-    } else if timestamp < country.Items[len(country.Items) - 1].Timestamp {
-        return model.MakeItem(0,0,0,0,0,0,0,0,0,0,0, 0, 0)
+    } else if timestamp < country.Items[len(country.Items)-1].Timestamp {
+        return model.MakeItem(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
     } else {
-        return GetTotalDeathsChartItem(country, timestamp - 86400)
+        return GetTotalDeathsChartItem(country, timestamp-86400)
     }
 
 }
@@ -226,7 +219,7 @@ func DeleteItem(id int64) {
 
 }
 
-func InsertItem(country *model.Country,  item *model.Item) (int64, interface{}) {
+func InsertItem(country *model.Country, item *model.Item) (int64, interface{}) {
     result := ExecuteSQL(SQL_INSERT_ITEM, item.TotalCases, item.TotalDeaths, item.TotalRecovered, item.SeriousCases, item.TotalCasesPer1Pop, item.TotalDeathsPer1Pop, item.TotalTests, item.TestsPer1Pop, item.Timestamp, country.Id)
 
     rowAffected, _ := result.RowsAffected()

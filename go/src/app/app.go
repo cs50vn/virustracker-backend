@@ -17,6 +17,7 @@ import (
     "runtime"
     "strconv"
     "strings"
+    "time"
 )
 
 /////////////////////////////////////////////////////////////////////////////
@@ -337,7 +338,8 @@ func GetTopHomeHandler(params ...string) string {
     var resultCode = 200
     var data = ""
 
-    data += fmt.Sprintf(utils.OBJECT_TEMPLATE, fmt.Sprintf(utils.ITEM2_TEMPLATE, "totalCases", apprepository.AppModel.TotalCases)+","+
+    data += fmt.Sprintf(utils.OBJECT_TEMPLATE, fmt.Sprintf(utils.ITEM2_TEMPLATE, "timestamp", apprepository.AppModel.Timestamp)+","+
+        fmt.Sprintf(utils.ITEM2_TEMPLATE, "totalCases", apprepository.AppModel.TotalCases)+","+
         fmt.Sprintf(utils.ITEM2_TEMPLATE, "newCases", apprepository.AppModel.NewCases)+","+
         fmt.Sprintf(utils.ITEM2_TEMPLATE, "totalDeaths", apprepository.AppModel.TotalDeaths)+","+
         fmt.Sprintf(utils.ITEM2_TEMPLATE, "newDeaths", apprepository.AppModel.NewDeaths)+","+
@@ -347,7 +349,6 @@ func GetTopHomeHandler(params ...string) string {
         fmt.Sprintf(utils.ITEM4_TEMPLATE, "totalCasesRecent", utils.GenerateRecentTotalCasesJson())+","+
         fmt.Sprintf(utils.ITEM4_TEMPLATE, "totalDeathsRecent", utils.GenerateRecentTotalDeathsJson()))
 
-
     return fmt.Sprintf(utils.RESULT_TEMPLATE, resultCode, data)
 }
 
@@ -355,7 +356,7 @@ func GetTopHomeHandler(params ...string) string {
 func GetTopCountryHandler(params ...string) string {
     var resultCode = 200
     var data = ""
-
+    var t = time.Now().Unix()
     for _, item := range apprepository.TopCountriesListArray {
         data += fmt.Sprintf(utils.OBJECT_TEMPLATE, fmt.Sprintf(utils.ITEM_TEMPLATE, "id", item.Id)+","+
             fmt.Sprintf(utils.ITEM_TEMPLATE, "name", item.Name)+","+
@@ -364,9 +365,9 @@ func GetTopCountryHandler(params ...string) string {
             fmt.Sprintf(utils.ITEM_TEMPLATE, "flagData", item.FlagData)+","+
             fmt.Sprintf(utils.ITEM2_TEMPLATE, "flagTimestamp", item.FlagTimestamp)+","+
             fmt.Sprintf(utils.ITEM2_TEMPLATE, "timestamp", item.Timestamp)+","+
-            fmt.Sprintf(utils.ITEM2_TEMPLATE, "totalCases", item.Items[0].TotalCases)+","+
-            fmt.Sprintf(utils.ITEM2_TEMPLATE, "newCases", item.Items[0].NewCases)+","+
-            fmt.Sprintf(utils.ITEM2_TEMPLATE, "totalDeaths", item.Items[0].TotalDeaths)) + ","
+            fmt.Sprintf(utils.ITEM2_TEMPLATE, "totalCases", utils.GetItemByTimestamp(item, t).TotalCases)+","+
+            fmt.Sprintf(utils.ITEM2_TEMPLATE, "newCases", utils.GetItemByTimestamp(item, t).TotalCases - utils.GetItemByTimestamp(item, t - 86400).TotalCases)+","+
+            fmt.Sprintf(utils.ITEM2_TEMPLATE, "totalDeaths", utils.GetItemByTimestamp(item, t).TotalDeaths)) + ","
     }
 
     data = fmt.Sprintf(utils.ARRAY_TEMPLATE, strings.TrimSuffix(data, ","))
@@ -378,6 +379,7 @@ func GetCountryDetailHandler(params ...string) string {
     var resultCode = 200
     var countryId = params[0]
     var data = ""
+    var t = time.Now().Unix()
 
     if item, ok := apprepository.TopCountriesList[countryId]; ok {
         data += fmt.Sprintf(utils.OBJECT_TEMPLATE, fmt.Sprintf(utils.ITEM_TEMPLATE, "id", item.Id)+","+
@@ -390,7 +392,7 @@ func GetCountryDetailHandler(params ...string) string {
             fmt.Sprintf(utils.ITEM_TEMPLATE, "flagData", item.FlagData)+","+
             fmt.Sprintf(utils.ITEM2_TEMPLATE, "flagTimestamp", item.FlagTimestamp)+","+
             fmt.Sprintf(utils.ITEM2_TEMPLATE, "timestamp", item.Timestamp)+","+
-            fmt.Sprintf(utils.ITEM5_TEMPLATE, "status", utils.GenerateCountryDetailStatus(countryId)))
+            fmt.Sprintf(utils.ITEM5_TEMPLATE, "status", utils.GenerateCountryDetailStatus(countryId, t)))
     } else {
         resultCode = 400;
         data = fmt.Sprintf(utils.ITEM7_TEMPLATE, "Invalid Country Detail Request")
