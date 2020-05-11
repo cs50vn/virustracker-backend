@@ -303,7 +303,8 @@ func GetTopAllHandler(params ...string) string {
     var str1 = ""
 
     //Top home
-    str += fmt.Sprintf(utils.OBJECT_TEMPLATE, fmt.Sprintf(utils.ITEM2_TEMPLATE, "totalCases", apprepository.AppModel.TotalCases)+","+
+    str += fmt.Sprintf(utils.OBJECT_TEMPLATE, fmt.Sprintf(utils.ITEM2_TEMPLATE, "timestamp", apprepository.AppModel.Timestamp)+","+
+        fmt.Sprintf(utils.ITEM2_TEMPLATE, "totalCases", apprepository.AppModel.TotalCases)+","+
         fmt.Sprintf(utils.ITEM2_TEMPLATE, "newCases", apprepository.AppModel.NewCases)+","+
         fmt.Sprintf(utils.ITEM2_TEMPLATE, "totalDeaths", apprepository.AppModel.TotalDeaths)+","+
         fmt.Sprintf(utils.ITEM2_TEMPLATE, "newDeaths", apprepository.AppModel.NewDeaths)+","+
