@@ -301,6 +301,9 @@ func GetTopAllHandler(params ...string) string {
     var data = ""
     var str = ""
     var str1 = ""
+    var str2 = ""
+    var str3 = ""
+    var t = time.Now().Unix()
 
     //Top home
     str += fmt.Sprintf(utils.OBJECT_TEMPLATE, fmt.Sprintf(utils.ITEM2_TEMPLATE, "timestamp", apprepository.AppModel.Timestamp)+","+
@@ -315,22 +318,31 @@ func GetTopAllHandler(params ...string) string {
         fmt.Sprintf(utils.ITEM4_TEMPLATE, "totalDeathsRecent", utils.GenerateRecentTotalDeathsJson()))
 
     //Top country
+    for _, continent := range apprepository.ContinentList {
+
+        str1 += fmt.Sprintf(utils.OBJECT_TEMPLATE, fmt.Sprintf(utils.ITEM_TEMPLATE, "id", continent.Id)+","+
+            fmt.Sprintf(utils.ITEM_TEMPLATE, "name", continent.Name)) + ","
+    }
+    str1 = strings.TrimSuffix(str1, ",")
+    str1 = fmt.Sprintf(utils.ARRAY_TEMPLATE, str1)
+
     for _, item := range apprepository.TopCountriesListArray {
-        str1 += fmt.Sprintf(utils.OBJECT_TEMPLATE, fmt.Sprintf(utils.ITEM_TEMPLATE, "id", item.Id)+","+
+        str2 += fmt.Sprintf(utils.OBJECT_TEMPLATE, fmt.Sprintf(utils.ITEM_TEMPLATE, "id", item.Id)+","+
             fmt.Sprintf(utils.ITEM_TEMPLATE, "name", item.Name)+","+
             fmt.Sprintf(utils.ITEM_TEMPLATE, "flagId", item.FlagId)+","+
             fmt.Sprintf(utils.ITEM_TEMPLATE, "flagUrl", item.FlagUrl)+","+
             fmt.Sprintf(utils.ITEM_TEMPLATE, "flagData", item.FlagData)+","+
             fmt.Sprintf(utils.ITEM2_TEMPLATE, "flagTimestamp", item.FlagTimestamp)+","+
             fmt.Sprintf(utils.ITEM2_TEMPLATE, "timestamp", item.Timestamp)+","+
-            fmt.Sprintf(utils.ITEM2_TEMPLATE, "totalCases", item.Items[0].TotalCases)+","+
-            fmt.Sprintf(utils.ITEM2_TEMPLATE, "newCases", item.Items[0].NewCases)+","+
-            fmt.Sprintf(utils.ITEM2_TEMPLATE, "totalDeaths", item.Items[0].TotalDeaths)) + ","
+            fmt.Sprintf(utils.ITEM2_TEMPLATE, "totalCases", utils.GetItemByTimestamp(item, t).TotalCases)+","+
+            fmt.Sprintf(utils.ITEM2_TEMPLATE, "newCases", utils.GetItemByTimestamp(item, t).TotalCases - utils.GetItemByTimestamp(item, t - 86400).TotalCases)+","+
+            fmt.Sprintf(utils.ITEM2_TEMPLATE, "totalDeaths", utils.GetItemByTimestamp(item, t).TotalDeaths) + "," +
+            fmt.Sprintf(utils.ITEM_TEMPLATE, "continentId", item.Continent.Id)) + ","
     }
+    str2 = fmt.Sprintf(utils.ARRAY_TEMPLATE, strings.TrimSuffix(str2, ","))
+    str3 = fmt.Sprintf(utils.OBJECT_TEMPLATE, fmt.Sprintf(utils.ITEM6_TEMPLATE, "continentList", str1) + "," + fmt.Sprintf(utils.ITEM6_TEMPLATE, "countryList", str2))
 
-    str1 = fmt.Sprintf(utils.ARRAY_TEMPLATE, strings.TrimSuffix(str1, ","))
-
-    data = fmt.Sprintf(utils.OBJECT_TEMPLATE, fmt.Sprintf(utils.ITEM6_TEMPLATE, "tophome", str) + "," + fmt.Sprintf(utils.ITEM6_TEMPLATE, "topcountry", str1))
+    data = fmt.Sprintf(utils.OBJECT_TEMPLATE, fmt.Sprintf(utils.ITEM6_TEMPLATE, "tophome", str) + "," + fmt.Sprintf(utils.ITEM6_TEMPLATE, "topcountry", str3))
 
     return fmt.Sprintf(utils.RESULT_TEMPLATE, resultCode, data)
 }
@@ -357,9 +369,20 @@ func GetTopHomeHandler(params ...string) string {
 func GetTopCountryHandler(params ...string) string {
     var resultCode = 200
     var data = ""
+    var str = ""
+    var str1 = ""
     var t = time.Now().Unix()
+
+    for _, continent := range apprepository.ContinentList {
+
+        str += fmt.Sprintf(utils.OBJECT_TEMPLATE, fmt.Sprintf(utils.ITEM_TEMPLATE, "id", continent.Id)+","+
+            fmt.Sprintf(utils.ITEM_TEMPLATE, "name", continent.Name)) + ","
+    }
+    str = strings.TrimSuffix(str, ",")
+    str = fmt.Sprintf(utils.ARRAY_TEMPLATE, str)
+
     for _, item := range apprepository.TopCountriesListArray {
-        data += fmt.Sprintf(utils.OBJECT_TEMPLATE, fmt.Sprintf(utils.ITEM_TEMPLATE, "id", item.Id)+","+
+        str1 += fmt.Sprintf(utils.OBJECT_TEMPLATE, fmt.Sprintf(utils.ITEM_TEMPLATE, "id", item.Id)+","+
             fmt.Sprintf(utils.ITEM_TEMPLATE, "name", item.Name)+","+
             fmt.Sprintf(utils.ITEM_TEMPLATE, "flagId", item.FlagId)+","+
             fmt.Sprintf(utils.ITEM_TEMPLATE, "flagUrl", item.FlagUrl)+","+
@@ -368,10 +391,12 @@ func GetTopCountryHandler(params ...string) string {
             fmt.Sprintf(utils.ITEM2_TEMPLATE, "timestamp", item.Timestamp)+","+
             fmt.Sprintf(utils.ITEM2_TEMPLATE, "totalCases", utils.GetItemByTimestamp(item, t).TotalCases)+","+
             fmt.Sprintf(utils.ITEM2_TEMPLATE, "newCases", utils.GetItemByTimestamp(item, t).TotalCases - utils.GetItemByTimestamp(item, t - 86400).TotalCases)+","+
-            fmt.Sprintf(utils.ITEM2_TEMPLATE, "totalDeaths", utils.GetItemByTimestamp(item, t).TotalDeaths)) + ","
+            fmt.Sprintf(utils.ITEM2_TEMPLATE, "totalDeaths", utils.GetItemByTimestamp(item, t).TotalDeaths) + "," +
+            fmt.Sprintf(utils.ITEM_TEMPLATE, "continentId", item.Continent.Id)) + ","
     }
 
-    data = fmt.Sprintf(utils.ARRAY_TEMPLATE, strings.TrimSuffix(data, ","))
+    str1 = fmt.Sprintf(utils.ARRAY_TEMPLATE, strings.TrimSuffix(str1, ","))
+    data = fmt.Sprintf(utils.OBJECT_TEMPLATE, fmt.Sprintf(utils.ITEM6_TEMPLATE, "continentList", str) + "," + fmt.Sprintf(utils.ITEM6_TEMPLATE, "countryList", str1))
 
     return fmt.Sprintf(utils.RESULT_TEMPLATE, resultCode, data)
 }
