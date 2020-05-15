@@ -9,7 +9,7 @@ import (
 var ConfigName = "config.json"
 var Config model.AppConfig
 var DbConnection *sql.DB
-var LimitCountryChart = 7
+var LimitCountryChart = 4
 var ListOfVersions = make(map[int]*model.Version)
 var ListOfVersionsKeys = make([]int, 0)
 
