@@ -418,6 +418,7 @@ func GetCountryDetailHandler(params ...string) string {
             fmt.Sprintf(utils.ITEM_TEMPLATE, "flagData", item.FlagData)+","+
             fmt.Sprintf(utils.ITEM2_TEMPLATE, "flagTimestamp", item.FlagTimestamp)+","+
             fmt.Sprintf(utils.ITEM2_TEMPLATE, "timestamp", item.Timestamp)+","+
+            fmt.Sprintf(utils.ITEM2_TEMPLATE, "continentId", item.Continent.Id)+","+
             fmt.Sprintf(utils.ITEM5_TEMPLATE, "status", utils.GenerateCountryDetailStatus(countryId, t)))
     } else {
         resultCode = 400;
